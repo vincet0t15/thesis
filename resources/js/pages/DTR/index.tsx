@@ -167,7 +167,7 @@ export default function DTR({ students, filters, courses, events }: Props) {
                             <span className="rounded-sm lg:inline">Import Logs</span>
                         </Button>
 
-                        {selectedStudent.length > 0 && data.selectedYear && data.selectedMonth && (
+                        {selectedStudent.length > 0 && (data.selectedYear || data.selectedMonth || data.event_id) && (
                             <Button variant="outline" size="sm" className="cursor-pointer" onClick={handleClickPrint}>
                                 <Printer />
                                 <span className="rounded-sm lg:inline">Print DTR</span>

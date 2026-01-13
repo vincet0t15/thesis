@@ -45,7 +45,8 @@ class ReportController extends Controller
 
                 $query->where(function ($q) use ($dateFrom, $dateTo, $request) {
                     $q->where('logs.event_id', $request->event_id)
-                        ->orWhere(function ($sub) use ($dateFrom, $dateTo) {
+                        ->whereBetween('logs.date_time', [$dateFrom, $dateTo])
+                        ->orWhere(function ($sub) use ($dateFrom, $dateTo, $request) {
                             $sub->whereBetween('logs.date_time', [$dateFrom, $dateTo])
                                 ->whereNull('logs.event_id');
                         });

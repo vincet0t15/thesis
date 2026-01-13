@@ -81,6 +81,20 @@ export default function AttendeeCountIndex({ reportData, allEvents, filters }: P
         ? `${dayjs(data.date_from).format('MMM D, YYYY')} - ${dayjs(data.date_to).format('MMM D, YYYY')}`
         : 'All Dates';
 
+    const hasDateRange = Boolean(data.date_from) && Boolean(data.date_to);
+    const selectedFrom = hasDateRange ? dayjs(data.date_from) : null;
+    const selectedTo = hasDateRange ? dayjs(data.date_to) : null;
+
+    const filteredData = hasDateRange
+        ? reportData.data.filter((item) => {
+            const itemFrom = dayjs(item.date_from);
+            const itemTo = dayjs(item.date_to);
+            const startOk = itemFrom.isAfter(selectedFrom!) || itemFrom.isSame(selectedFrom!);
+            const endOk = itemTo.isBefore(selectedTo!) || itemTo.isSame(selectedTo!);
+            return startOk && endOk;
+        })
+        : reportData.data;
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Attendee Count Report" />
@@ -104,7 +118,7 @@ export default function AttendeeCountIndex({ reportData, allEvents, filters }: P
                             </div>
                         </div>
                         <div className="flex flex-col items-end justify-end">
-                            <span className="font-semibold">Total Records:</span> {reportData.total}
+                            <span className="font-semibold">Total Records:</span> {filteredData.length}
                         </div>
                     </div>
                 </div>
@@ -166,8 +180,8 @@ export default function AttendeeCountIndex({ reportData, allEvents, filters }: P
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {reportData.data.length > 0 ? (
-                                reportData.data.map((item, index) => (
+                            {filteredData.length > 0 ? (
+                                filteredData.map((item, index) => (
                                     <TableRow key={index}>
                                         <TableCell className="font-medium">{item.event_name}</TableCell>
                                         <TableCell>
