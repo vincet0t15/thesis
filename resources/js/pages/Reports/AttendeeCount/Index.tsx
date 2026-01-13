@@ -9,6 +9,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
+import { Button } from '@/components/ui/button';
 import {
     Table,
     TableBody,
@@ -20,6 +21,7 @@ import {
 import Pagination from '@/components/paginationData';
 import dayjs from 'dayjs';
 import { PaginatedDataResponse } from '@/types/pagination';
+import { IconPrinter } from '@tabler/icons-react';
 
 interface ReportItem {
     event_name: string;
@@ -74,11 +76,40 @@ export default function AttendeeCountIndex({ reportData, allEvents, filters }: P
         });
     };
 
+    const selectedEvent = allEvents.find((e) => String(e.id) === data.event_id)?.name || 'All Events';
+    const dateRange = data.date_from && data.date_to
+        ? `${dayjs(data.date_from).format('MMM D, YYYY')} - ${dayjs(data.date_to).format('MMM D, YYYY')}`
+        : 'All Dates';
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Attendee Count Report" />
-            <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
-                <div className="flex w-full flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto print:overflow-visible rounded-xl p-4">
+
+                {/* Print Header */}
+                <div className="hidden print:block mb-6">
+                    <div className="text-center space-y-1">
+                        <h1 className="text-xl font-bold uppercase tracking-widest text-black">Daily Time Record System</h1>
+                        <h2 className="text-lg font-semibold text-gray-800">Attendee Count Report</h2>
+                        <p className="text-xs text-gray-500 italic">Generated on {dayjs().format('MMMM D, YYYY h:mm A')}</p>
+                    </div>
+                    <div className="mt-4 flex justify-between border-b border-black pb-2 text-xs">
+                        <div className="flex flex-col">
+                            <span className="font-bold text-gray-600 uppercase text-xs">Filter Criteria</span>
+                            <div className="mt-1">
+                                <span className="font-semibold">Event:</span> {selectedEvent}
+                            </div>
+                            <div>
+                                <span className="font-semibold">Date Range:</span> {dateRange}
+                            </div>
+                        </div>
+                        <div className="flex flex-col items-end justify-end">
+                            <span className="font-semibold">Total Records:</span> {reportData.total}
+                        </div>
+                    </div>
+                </div>
+
+                <div className="flex w-full flex-col gap-4 sm:flex-row sm:items-end sm:justify-between print-hide">
                     <div className="flex flex-1 flex-col gap-4 sm:flex-row sm:items-end">
                         <div className="flex flex-col gap-1.5">
                             <label className="text-sm font-medium">Event</label>
@@ -116,10 +147,16 @@ export default function AttendeeCountIndex({ reportData, allEvents, filters }: P
                             />
                         </div>
                     </div>
+
+                    <div className="flex items-center gap-2">
+                        <Button variant="outline" size="icon" onClick={() => window.print()}>
+                            <IconPrinter className="size-4" />
+                        </Button>
+                    </div>
                 </div>
 
-                <div className="w-full overflow-hidden rounded-sm border shadow-sm">
-                    <Table>
+                <div className="w-full overflow-hidden print:overflow-visible print:w-full rounded-sm border shadow-sm">
+                    <Table className="print:w-full print:table-fixed">
                         <TableHeader className="bg-muted">
                             <TableRow>
                                 <TableHead className="w-[30%]">Event</TableHead>
@@ -152,8 +189,13 @@ export default function AttendeeCountIndex({ reportData, allEvents, filters }: P
                         </TableBody>
                     </Table>
                 </div>
-                <div>
+                <div className="print-hide">
                     <Pagination data={reportData} />
+                </div>
+
+                {/* Print Footer */}
+                <div className="hidden print:block fixed bottom-4 left-0 w-full text-center text-xs text-gray-500 border-t pt-2 bg-white">
+                    System Generated Report | {dayjs().format('YYYY-MM-DD')}
                 </div>
             </div>
         </AppLayout>
