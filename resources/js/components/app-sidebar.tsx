@@ -27,6 +27,11 @@ const data = {
             url: '/attendance-reports',
             icon: IconReport,
         },
+        {
+            name: 'Attendee Count Reports',
+            url: '/attendee-count-reports',
+            icon: IconReport,
+        },
     ],
     settings: [
         {

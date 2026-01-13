@@ -48,6 +48,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // REPORTS
     Route::get('/attendance-reports', [ReportController::class, 'attendance'])->name('report.attendance');
+    Route::get('/attendee-count-reports', [ReportController::class, 'attendeeCount'])->name('report.attendee-count');
 });
 
 

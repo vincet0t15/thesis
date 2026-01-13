@@ -15,4 +15,9 @@ class Event extends Model
         'is_active',
         'time_in',
     ];
+
+    public function Logs()
+    {
+        return $this->hasMany(Log::class);
+    }
 }

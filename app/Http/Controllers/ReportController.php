@@ -77,4 +77,47 @@ class ReportController extends Controller
             'filters' => $filters,
         ]);
     }
+
+    public function attendeeCount(Request $request)
+    {
+        $filters = $request->only(['event_id', 'date_from', 'date_to']);
+
+        $query = DB::table('logs')
+            ->join('events', 'logs.event_id', '=', 'events.id')
+            ->join('students', 'logs.student_id', '=', 'students.id')
+            ->join('courses', 'students.course_id', '=', 'courses.id')
+            ->select([
+                'events.name as event_name',
+                'events.date_from',
+                'events.date_to',
+                'courses.course_name as program',
+                DB::raw('COUNT(DISTINCT logs.student_id) as attendees')
+            ])
+            ->whereNull('logs.deleted_at')
+            ->groupBy('events.id', 'events.name', 'events.date_from', 'events.date_to', 'courses.id', 'courses.course_name');
+
+        if ($request->event_id && $request->event_id !== 'all') {
+            $query->where('logs.event_id', $request->event_id);
+        }
+
+        if ($request->date_from) {
+            $query->whereDate('logs.date_time', '>=', $request->date_from);
+        }
+        if ($request->date_to) {
+            $query->whereDate('logs.date_time', '<=', $request->date_to);
+        }
+
+        $data = $query->orderBy('events.date_from', 'desc')
+            ->orderBy('courses.course_name', 'asc')
+            ->paginate(15)
+            ->withQueryString();
+
+        $allEvents = Event::select('id', 'name')->orderBy('date_from', 'desc')->get();
+
+        return Inertia::render('Reports/AttendeeCount/Index', [
+            'reportData' => $data,
+            'allEvents' => $allEvents,
+            'filters' => $filters,
+        ]);
+    }
 }

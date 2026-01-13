@@ -22,7 +22,7 @@ interface Props {
 export default function CustomDatePicker({
     initialDate,
     onSelect,
-    disabled = false, // ✅ Default false
+    disabled = false,
 }: Props) {
     const id = useId();
     const [date, setDate] = useState<Date | undefined>();
