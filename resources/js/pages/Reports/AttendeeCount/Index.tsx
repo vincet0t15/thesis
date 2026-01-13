@@ -1,7 +1,7 @@
 import { Head, router, useForm } from '@inertiajs/react';
 import { BreadcrumbItem } from '@/types';
 import AppLayout from '@/layouts/app-layout';
-import { Input } from '@/components/ui/input';
+import CustomDatePicker from '@/components/custom-date-picker';
 import {
     Select,
     SelectContent,
@@ -21,12 +21,12 @@ import Pagination from '@/components/paginationData';
 import dayjs from 'dayjs';
 import { PaginatedDataResponse } from '@/types/pagination';
 
-interface EventProps {
-    id: number;
-    name: string;
+interface ReportItem {
+    event_name: string;
     date_from: string;
     date_to: string;
-    attendee_count: number;
+    program: string;
+    attendees: number;
 }
 
 interface FilterProps {
@@ -36,7 +36,7 @@ interface FilterProps {
 }
 
 interface Props {
-    events: PaginatedDataResponse<EventProps>;
+    reportData: PaginatedDataResponse<ReportItem>;
     allEvents: { id: number; name: string }[];
     filters: FilterProps;
 }
@@ -52,7 +52,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function AttendeeCountIndex({ events, allEvents, filters }: Props) {
+export default function AttendeeCountIndex({ reportData, allEvents, filters }: Props) {
     const { data, setData, get } = useForm({
         event_id: filters.event_id || 'all',
         date_from: filters.date_from || '',
@@ -100,23 +100,19 @@ export default function AttendeeCountIndex({ events, allEvents, filters }: Props
                             </Select>
                         </div>
 
-                        <div className="flex flex-col gap-1.5">
+                        <div className="flex flex-col gap-1.5 w-full sm:w-[180px]">
                             <label className="text-sm font-medium">Date From</label>
-                            <Input
-                                type="date"
-                                value={data.date_from}
-                                onChange={(e) => handleFilterChange('date_from', e.target.value)}
-                                className="w-full sm:w-[180px]"
+                            <CustomDatePicker
+                                initialDate={data.date_from}
+                                onSelect={(date) => handleFilterChange('date_from', date)}
                             />
                         </div>
 
-                        <div className="flex flex-col gap-1.5">
+                        <div className="flex flex-col gap-1.5 w-full sm:w-[180px]">
                             <label className="text-sm font-medium">Date To</label>
-                            <Input
-                                type="date"
-                                value={data.date_to}
-                                onChange={(e) => handleFilterChange('date_to', e.target.value)}
-                                className="w-full sm:w-[180px]"
+                            <CustomDatePicker
+                                initialDate={data.date_to}
+                                onSelect={(date) => handleFilterChange('date_to', date)}
                             />
                         </div>
                     </div>
@@ -126,28 +122,30 @@ export default function AttendeeCountIndex({ events, allEvents, filters }: Props
                     <Table>
                         <TableHeader className="bg-muted">
                             <TableRow>
-                                <TableHead>Event Name</TableHead>
-                                <TableHead>Start Date</TableHead>
-                                <TableHead>End Date</TableHead>
-                                <TableHead className="text-right">Total Attendees</TableHead>
+                                <TableHead className="w-[30%]">Event</TableHead>
+                                <TableHead className="w-[25%]">Date</TableHead>
+                                <TableHead className="w-[30%]">Program</TableHead>
+                                <TableHead className="text-right">Attendees</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {events.data.length > 0 ? (
-                                events.data.map((event) => (
-                                    <TableRow key={event.id}>
-                                        <TableCell className="font-medium">{event.name}</TableCell>
-                                        <TableCell>{dayjs(event.date_from).format('MMM D, YYYY')}</TableCell>
-                                        <TableCell>{dayjs(event.date_to).format('MMM D, YYYY')}</TableCell>
+                            {reportData.data.length > 0 ? (
+                                reportData.data.map((item, index) => (
+                                    <TableRow key={index}>
+                                        <TableCell className="font-medium">{item.event_name}</TableCell>
+                                        <TableCell>
+                                            {dayjs(item.date_from).format('MM/DD/YYYY')}-{dayjs(item.date_to).format('MM/DD/YYYY')}
+                                        </TableCell>
+                                        <TableCell className="uppercase">{item.program}</TableCell>
                                         <TableCell className="text-right font-bold text-lg">
-                                            {event.attendee_count}
+                                            {item.attendees}
                                         </TableCell>
                                     </TableRow>
                                 ))
                             ) : (
                                 <TableRow>
                                     <TableCell colSpan={4} className="py-8 text-center text-gray-500">
-                                        No events found.
+                                        No data found matching your criteria.
                                     </TableCell>
                                 </TableRow>
                             )}
@@ -155,7 +153,7 @@ export default function AttendeeCountIndex({ events, allEvents, filters }: Props
                     </Table>
                 </div>
                 <div>
-                    <Pagination data={events} />
+                    <Pagination data={reportData} />
                 </div>
             </div>
         </AppLayout>
