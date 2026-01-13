@@ -52,14 +52,21 @@ class DailyTimeRecordController extends Controller
 
         if ($request->event_id) {
             $event = Event::findOrFail($request->event_id);
-            $date_from = Carbon::parse($event->date_from)->startOfDay();
-            $date_to   = Carbon::parse($event->date_to)->endOfDay();
+            if (!empty($request->selectedYear) && !empty($request->selectedMonth)) {
+                $year = (int) $request->selectedYear;
+                $month = (int) $request->selectedMonth;
+            } else {
+                $date_from_event = Carbon::parse($event->date_from);
+                $year  = $date_from_event->year;
+                $month = $date_from_event->month;
+            }
 
-            $year  = $date_from->year;
-            $month = $date_from->month;
+            // Always use the full month range to match the DTR form layout
+            $date_from = Carbon::createFromDate($year, $month, 1)->startOfDay();
+            $date_to = $date_from->copy()->endOfMonth()->endOfDay();
         } else {
-            $year = $request->selectedYear ?? Carbon::now()->year;
-            $month = $request->selectedMonth ?? Carbon::now()->month;
+            $year = $request->selectedYear ?: Carbon::now()->year;
+            $month = $request->selectedMonth ?: Carbon::now()->month;
 
             $date_from = Carbon::createFromDate($year, $month, 1)->startOfDay();
             $date_to = $date_from->copy()->endOfMonth()->endOfDay();
