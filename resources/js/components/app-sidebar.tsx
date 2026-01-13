@@ -64,12 +64,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <SidebarHeader>
                 <SidebarMenu>
                     <SidebarMenuItem className="text-center">
-                        <div className="text-sm leading-tight">
-                            <span className="block text-2xl font-extrabold text-white uppercase">Daily Time Record</span>
-                            <span className="block text-[16px] font-bold tracking-wider text-white uppercase">Generator</span>
+                        <div className="flex flex-col items-center justify-center text-sm leading-tight group-data-[collapsible=icon]:hidden">
+                            <span className="block text-lg font-extrabold text-white uppercase leading-5">Biometric-Based Attendance Monitoring System</span>
+                            <span className="block text-[10px] font-bold tracking-wider text-white/90 uppercase mt-1 leading-3">Palawan State University San Vicente Campus</span>
                         </div>
                     </SidebarMenuItem>
-
                     <div className="my-2 h-[2px] w-full rounded-full bg-white/20" />
                 </SidebarMenu>
             </SidebarHeader>
