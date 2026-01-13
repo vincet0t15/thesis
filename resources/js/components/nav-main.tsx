@@ -1,11 +1,13 @@
 import { type Icon } from '@tabler/icons-react';
 
-import { SidebarGroup, SidebarGroupContent, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
+import { SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { Link, usePage } from '@inertiajs/react';
 
 export function NavMain({
+    title,
     items,
 }: {
+    title: string;
     items: {
         title: string;
         url: string;
@@ -15,6 +17,7 @@ export function NavMain({
     const page = usePage();
     return (
         <SidebarGroup>
+            <SidebarGroupLabel>{title}</SidebarGroupLabel>
             <SidebarGroupContent className="flex flex-col gap-2">
                 <SidebarMenu>
                     {items.map((item) => (

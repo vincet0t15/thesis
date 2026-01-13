@@ -21,7 +21,13 @@ const data = {
             icon: IconCalendarCheck,
         },
     ],
-
+    reports: [
+        {
+            name: 'Attendance Reports',
+            url: '/attendance-reports',
+            icon: IconReport,
+        },
+    ],
     settings: [
         {
             name: 'Courses',
@@ -33,9 +39,6 @@ const data = {
             url: '/events',
             icon: IconCalendarCheck,
         },
-
-
-
     ],
 };
 interface AuthUser {
@@ -70,8 +73,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 </SidebarMenu>
             </SidebarHeader>
             <SidebarContent>
-                <NavMain items={data.navMain} />
-                <NavDocuments items={data.settings} />
+                <NavMain title="Main" items={data.navMain} />
+                <NavDocuments title="Reports" items={data.reports} />
+                <NavDocuments title="Settings" items={data.settings} />
             </SidebarContent>
             <SidebarFooter>
                 <NavUser user={auth.user} />

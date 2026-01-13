@@ -5,9 +5,11 @@ import { Link, usePage } from '@inertiajs/react';
 import { type Icon } from '@tabler/icons-react';
 
 export function NavDocuments({
+    title,
     items,
     ...props
 }: {
+    title: string;
     items: {
         name: string;
         url: string;
@@ -18,7 +20,7 @@ export function NavDocuments({
 
     return (
         <SidebarGroup {...props}>
-            <SidebarGroupLabel>Settings</SidebarGroupLabel>
+            <SidebarGroupLabel>{title}</SidebarGroupLabel>
             <SidebarMenu>
                 {items.map((item) => {
                     const isActive = url.startsWith(item.url);

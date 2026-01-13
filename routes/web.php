@@ -6,6 +6,7 @@ use App\Http\Controllers\EmploymentTypeController;
 use App\Http\Controllers\OfficeController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -43,6 +44,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/events-store', [EventController::class, 'store'])->name('event.store');
     Route::put('/events-update/{event}', [EventController::class, 'update'])->name('event.update');
     Route::delete('/events-destroy/{event}', [EventController::class, 'destroy'])->name('event.destroy');
+
+
+    // REPORTS
+    Route::get('/attendance-reports', [ReportController::class, 'attendance'])->name('report.attendance');
 });
 
 
