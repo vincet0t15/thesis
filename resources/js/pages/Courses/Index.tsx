@@ -69,7 +69,7 @@ export default function CourseIndex({ courses, filters }: Props) {
             <Head title="Dashboard" />
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
                 <div className="flex w-full flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                    <Button variant="outline" size="sm" className="cursor-pointer" onClick={() => setOpenCreate(true)}>
+                    <Button size="sm" className="cursor-pointer bg-blue-600 hover:bg-blue-700 text-white border-0 transition-colors" onClick={() => setOpenCreate(true)}>
                         <IconPlus />
                         <span className="rounded-sm lg:inline">Course</span>
                     </Button>
@@ -81,11 +81,11 @@ export default function CourseIndex({ courses, filters }: Props) {
 
                 <div className="w-full overflow-hidden rounded-sm border shadow-sm">
                     <Table>
-                        <TableHeader className="bg-muted">
+                        <TableHeader className="bg-muted/50">
                             <TableRow>
-                                <TableHead>Course Name</TableHead>
-                                <TableHead>Course Code</TableHead>
-                                <TableHead>Action</TableHead>
+                                <TableHead className="text-primary font-bold">Course Name</TableHead>
+                                <TableHead className="text-primary font-bold">Course Code</TableHead>
+                                <TableHead className="text-primary font-bold">Action</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
