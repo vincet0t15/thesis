@@ -1,4 +1,5 @@
 import { SidebarInset } from '@/components/ui/sidebar';
+import { cn } from '@/lib/utils';
 import * as React from 'react';
 
 interface AppContentProps extends React.ComponentProps<'main'> {
@@ -7,7 +8,7 @@ interface AppContentProps extends React.ComponentProps<'main'> {
 
 export function AppContent({ variant = 'header', children, ...props }: AppContentProps) {
     if (variant === 'sidebar') {
-        return <SidebarInset {...props}>{children}</SidebarInset>;
+        return <SidebarInset {...props} className={cn("bg-muted/40", props.className)}>{children}</SidebarInset>;
     }
 
     return (

@@ -11,7 +11,7 @@ export default function Page() {
     return (
         <SidebarProvider>
             <AppSidebar variant="inset" />
-            <SidebarInset>
+            <SidebarInset className="bg-muted/40">
                 <SiteHeader title="Dashboard" />
 
                 <div className="flex flex-1 flex-col">
