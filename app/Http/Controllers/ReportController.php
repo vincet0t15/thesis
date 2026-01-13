@@ -83,10 +83,15 @@ class ReportController extends Controller
     {
         $filters = $request->only(['event_id', 'date_from', 'date_to']);
 
-        $query = DB::table('logs')
-            ->join('events', 'logs.event_id', '=', 'events.id')
-            ->join('students', 'logs.student_id', '=', 'students.id')
-            ->join('courses', 'students.course_id', '=', 'courses.id')
+        $query = DB::table('events')
+            ->leftJoin('logs', function ($join) {
+                $join->on('logs.event_id', '=', 'events.id')
+                    ->whereNull('logs.deleted_at')
+                    ->whereColumn('logs.date_time', '>=', 'events.date_from')
+                    ->whereColumn('logs.date_time', '<=', 'events.date_to');
+            })
+            ->leftJoin('students', 'logs.student_id', '=', 'students.id')
+            ->leftJoin('courses', 'students.course_id', '=', 'courses.id')
             ->select([
                 'events.name as event_name',
                 'events.date_from',
@@ -94,19 +99,20 @@ class ReportController extends Controller
                 'courses.course_name as program',
                 DB::raw('COUNT(DISTINCT logs.student_id) as attendees')
             ])
-            ->whereNull('logs.deleted_at')
             ->groupBy('events.id', 'events.name', 'events.date_from', 'events.date_to', 'courses.id', 'courses.course_name');
 
         if ($request->event_id && $request->event_id !== 'all') {
-            $query->where('logs.event_id', $request->event_id);
+            $query->where('events.id', $request->event_id);
         }
 
-        if ($request->date_from) {
-            $query->whereDate('logs.date_time', '>=', $request->date_from);
+        // Restrict listed events to those whose own date range falls within the selected range
+        if ($request->date_from && $request->date_to) {
+            $fromDate = \Carbon\Carbon::parse($request->date_from)->toDateString();
+            $toDate = \Carbon\Carbon::parse($request->date_to)->toDateString();
+            $query->whereDate('events.date_from', '>=', $fromDate)
+                ->whereDate('events.date_to', '<=', $toDate);
         }
-        if ($request->date_to) {
-            $query->whereDate('logs.date_time', '<=', $request->date_to);
-        }
+        // Note: log date filtering is applied inside the left join to preserve events with zero attendees.
 
         $data = $query->orderBy('events.date_from', 'desc')
             ->orderBy('courses.course_name', 'asc')
