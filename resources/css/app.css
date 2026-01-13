@@ -173,51 +173,167 @@
 }
 
 @media print {
-
-    header,
-    .header,
-    .print-header {
-        background: none !important;
-        color: black !important;
-        box-shadow: none !important;
-        border: none !important;
-    }
-
-    .bg-gray-700,
-    .bg-gray-800 {
-        background-color: #1f2937 !important;
-    }
-
     @page {
-        size: 8.5in 13in;
         margin: 0;
-        background: white;
+        /* Remove browser header/footer */
+        size: auto;
     }
 
-    html,
     body {
-        background: #ffffff !important;
-        color: #000000 !important;
+        background: white !important;
+        color: black !important;
+        font-family: 'Times New Roman', Times, serif;
+        margin: 1cm !important;
+        /* Add content margin back */
+    }
+
+    /* Hide UI elements */
+    .print-hide,
+    nav,
+    header,
+    button,
+    .no-print,
+    .fixed,
+    .sticky {
+        display: none !important;
+    }
+
+    /* Reset container widths */
+    .w-full,
+    .max-w-7xl,
+    .container {
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    /* Table Styling */
+    table {
+        width: 100% !important;
+        border-collapse: collapse !important;
+        font-size: 9pt !important;
+        /* Smaller font for better fit */
+        margin-top: 1rem !important;
+        table-layout: fixed !important;
+        /* Force table to fit page width */
+    }
+
+    th,
+    td {
+        border: 1px solid #333 !important;
+        padding: 4px 6px !important;
+        /* Reduced padding */
+        text-align: left;
+        vertical-align: middle;
+        word-wrap: break-word !important;
+        /* Ensure long text wraps */
+        overflow-wrap: break-word !important;
+        white-space: normal !important;
+        /* Allow wrapping */
+    }
+
+    /* specific column widths adjustments if needed */
+    th:nth-child(1) {
+        width: 12%;
+    }
+
+    /* Date */
+    th:nth-child(2) {
+        width: 10%;
+    }
+
+    /* ID */
+    th:nth-child(3) {
+        width: 20%;
+    }
+
+    /* Name */
+    th:nth-child(4) {
+        width: 25%;
+    }
+
+    /* Course */
+    th:nth-child(5) {
+        width: 15%;
+    }
+
+    /* Event */
+    th:nth-child(6) {
+        width: 9%;
+    }
+
+    /* Time In */
+    th:nth-child(7) {
+        width: 9%;
+    }
+
+    /* Time Out */
+
+    th {
+        background-color: #f3f4f6 !important;
+        color: #000 !important;
+        font-weight: bold !important;
+        text-transform: uppercase;
+        font-size: 8pt !important;
+        /* Even smaller for headers */
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
+    }
+
+    /* Hide Scrollbars in Print */
+    ::-webkit-scrollbar {
+        display: none !important;
+    }
+
+    /* Override any overflow that might cause scrollbars */
+    .overflow-x-auto,
+    .overflow-hidden,
+    .overflow-y-auto {
         overflow: visible !important;
     }
 
-    body {
-        margin: 0 !important;
+    /* Clean up badges for print */
+    span.rounded {
+        border: none !important;
         padding: 0 !important;
-        font-size: 10pt;
-        /* optional: makes print smaller */
-        height: 13in !important;
-        min-height: 13in !important;
-        background-color: white !important;
+        background: transparent !important;
+        color: black !important;
+        font-weight: normal !important;
     }
 
-    .page-break {
-        page-break-after: always;
-        break-after: page;
+    /* Remove shadows and container borders */
+    .shadow-sm,
+    .shadow,
+    .rounded-xl,
+    .rounded-lg,
+    .rounded-md,
+    .rounded-sm,
+    .rounded {
+        box-shadow: none !important;
+        border-radius: 0 !important;
     }
 
+    .border {
+        border: none !important;
+    }
+
+    /* Ensure badges have some distinction if needed, or just text */
+    /* Let's keep it text-only for a very clean "document" look */
+
+    /* Footer */
+    .print-footer {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        text-align: center;
+        font-size: 9pt;
+        color: #666;
+        border-top: 1px solid #ddd;
+        padding-top: 8px;
+    }
+
+    /* DTR Specific Print Styles (Restored) */
     .print-container {
         page-break-inside: avoid;
         break-inside: avoid;
@@ -238,27 +354,6 @@
     .print-scale-dtr {
         transform: scale(0.85);
         transform-origin: top left;
-    }
-
-    table {
-        font-size: 10pt !important;
-    }
-
-    th,
-    td {
-        padding: 2px 4px !important;
-    }
-
-    .no-flex-print {
-        display: none !important;
-        overflow: visible !important;
-    }
-
-    .no-print,
-    .button-toolbar,
-    nav,
-    .print-hide {
-        display: none !important;
     }
 
     .log-columns {
@@ -282,6 +377,4 @@
         box-sizing: border-box;
         margin-bottom: 0.5rem;
     }
-
-
 }
