@@ -6,4 +6,5 @@ export interface LogProps {
     checkType: string;
     event_id: number;
     student: StudentProps;
+    date_time: string;
 }
