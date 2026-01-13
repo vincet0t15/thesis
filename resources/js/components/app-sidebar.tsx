@@ -65,16 +65,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 <SidebarMenu>
                     <SidebarMenuItem className="text-center">
                         <div className="text-sm leading-tight">
-                            <span className="block bg-gradient-to-r from-blue-600 to-orange-500 bg-clip-text text-2xl font-extrabold text-transparent uppercase">
-                                Daily Time Record
-                            </span>
-                            <span className="block bg-gradient-to-r from-blue-600 to-orange-500 bg-clip-text text-[16px] font-bold tracking-wider text-transparent uppercase">
-                                Generator
-                            </span>
+                            <span className="block text-2xl font-extrabold text-white uppercase">Daily Time Record</span>
+                            <span className="block text-[16px] font-bold tracking-wider text-white uppercase">Generator</span>
                         </div>
                     </SidebarMenuItem>
 
-                    <div className="my-2 h-[2px] w-full rounded-full bg-gradient-to-r from-blue-600 to-orange-500" />
+                    <div className="my-2 h-[2px] w-full rounded-full bg-white/20" />
                 </SidebarMenu>
             </SidebarHeader>
             <SidebarContent>
