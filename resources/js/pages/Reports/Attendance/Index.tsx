@@ -21,6 +21,7 @@ interface AttendanceRecord {
     student_name: string;
     student_code: string;
     course_name: string;
+    event_name: string | null;
     date: string;
     time_in: string | null;
     time_out: string | null;
@@ -139,6 +140,7 @@ export default function AttendanceIndex({ logs, courses, events, filters }: Prop
                                 <TableHead>Student ID</TableHead>
                                 <TableHead>Name</TableHead>
                                 <TableHead>Course</TableHead>
+                                <TableHead>Event</TableHead>
                                 <TableHead>Time In</TableHead>
                                 <TableHead>Time Out</TableHead>
                             </TableRow>
@@ -151,6 +153,15 @@ export default function AttendanceIndex({ logs, courses, events, filters }: Prop
                                         <TableCell>{record.student_code}</TableCell>
                                         <TableCell className="uppercase">{record.student_name}</TableCell>
                                         <TableCell>{record.course_name}</TableCell>
+                                        <TableCell>
+                                            {record.event_name ? (
+                                                <span className="rounded bg-blue-100 px-2 py-1 text-xs font-semibold text-blue-800">
+                                                    {record.event_name}
+                                                </span>
+                                            ) : (
+                                                <span className="text-gray-400 text-xs italic">Regular Class</span>
+                                            )}
+                                        </TableCell>
                                         <TableCell>
                                             {record.time_in ? (
                                                 <span className="rounded bg-green-100 px-2 py-1 text-xs font-semibold text-green-800">
@@ -173,7 +184,7 @@ export default function AttendanceIndex({ logs, courses, events, filters }: Prop
                                 ))
                             ) : (
                                 <TableRow>
-                                    <TableCell colSpan={6} className="py-8 text-center text-gray-500">
+                                    <TableCell colSpan={7} className="py-8 text-center text-gray-500">
                                         No attendance records found matching your criteria.
                                     </TableCell>
                                 </TableRow>
