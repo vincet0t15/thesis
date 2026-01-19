@@ -113,6 +113,16 @@ class ReportController extends Controller
     {
         $filters = $request->only(['event_id', 'date_from', 'date_to']);
 
+        if (!$request->boolean('initialized') && empty($filters['date_from']) && empty($filters['date_to'])) {
+            $today = now()->toDateString();
+            $filters['date_from'] = $today;
+            $filters['date_to'] = $today;
+            $request->merge([
+                'date_from' => $today,
+                'date_to' => $today,
+            ]);
+        }
+
         $query = DB::table('events')
             ->leftJoin('logs', function ($join) {
                 $join->on('logs.event_id', '=', 'events.id')

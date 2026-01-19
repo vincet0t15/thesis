@@ -55,10 +55,11 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function AttendeeCountIndex({ reportData, allEvents, filters }: Props) {
-    const { data, setData, get } = useForm({
+    const { data, setData } = useForm({
         event_id: filters.event_id || 'all',
         date_from: filters.date_from || '',
         date_to: filters.date_to || '',
+        initialized: '1',
     });
 
     const handleFilterChange = (key: string, value: string) => {
