@@ -47,7 +47,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function AttendanceIndex({ logs, courses, events, filters }: Props) {
-    const { data, setData, get } = useForm({
+    const { data, setData } = useForm({
         search: filters.search || '',
         course_id: filters.course_id || 'all',
         event_id: filters.event_id || 'all',
@@ -62,7 +62,12 @@ export default function AttendanceIndex({ logs, courses, events, filters }: Prop
 
     const handleKeyDown: KeyboardEventHandler<HTMLInputElement> = (e) => {
         if (e.key === 'Enter') {
-            get(route('report.attendance'), {
+            const queryParams: any = { ...data };
+            if (queryParams.course_id === 'all') delete queryParams.course_id;
+            if (queryParams.event_id === 'all') delete queryParams.event_id;
+            if (!queryParams.date_from) delete queryParams.date_from;
+            if (!queryParams.date_to) delete queryParams.date_to;
+            router.get(route('report.attendance'), queryParams, {
                 preserveState: true,
                 preserveScroll: true,
             });

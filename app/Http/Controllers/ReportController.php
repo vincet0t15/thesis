@@ -14,11 +14,21 @@ class ReportController extends Controller
     public function attendance(Request $request)
     {
         $filters = $request->only(['search', 'course_id', 'event_id', 'date_from', 'date_to']);
-        $search = $request->input('search');
+        $search = trim((string) $request->input('search', ''));
+        $courseId = $request->input('course_id');
+        $eventId = $request->input('event_id');
 
-        // Default date range to today only on first load (no "initialized" flag).
-        // When the UI clears the dates, it always sends initialized=1,
-        // so we skip this block and do not re-apply the default.
+        if ($courseId === 'all') {
+            $courseId = null;
+            $filters['course_id'] = null;
+        }
+
+        if ($eventId === 'all') {
+            $eventId = null;
+            $filters['event_id'] = null;
+        }
+
+
         if (!$request->boolean('initialized') && empty($filters['date_from']) && empty($filters['date_to'])) {
             $today = now()->toDateString();
             $filters['date_from'] = $today;
@@ -26,7 +36,7 @@ class ReportController extends Controller
             $request->merge([
                 'date_from' => $today,
                 'date_to' => $today,
-                'initialized' => true,
+                // 'initialized' => true,
             ]);
         }
 
@@ -46,9 +56,8 @@ class ReportController extends Controller
             ])
             ->groupBy('logs.student_id', 'date', 'students.name', 'students.student_id', 'courses.course_name', 'logs.event_id', 'events.name');
 
-        // Apply Filters
-        if ($request->course_id) {
-            $query->where('students.course_id', $request->course_id);
+        if ($courseId) {
+            $query->where('students.course_id', $courseId);
         }
 
         if ($request->date_from) {
@@ -59,23 +68,8 @@ class ReportController extends Controller
             $query->whereDate('logs.date_time', '<=', $request->date_to);
         }
 
-        if ($request->event_id) {
-            $event = Event::find($request->event_id);
-            if ($event) {
-                $dateFrom = \Carbon\Carbon::parse($event->date_from)->startOfDay();
-                $dateTo = \Carbon\Carbon::parse($event->date_to)->endOfDay();
-
-                $query->where(function ($q) use ($dateFrom, $dateTo, $request) {
-                    $q->where('logs.event_id', $request->event_id)
-                        ->whereBetween('logs.date_time', [$dateFrom, $dateTo])
-                        ->orWhere(function ($sub) use ($dateFrom, $dateTo, $request) {
-                            $sub->whereBetween('logs.date_time', [$dateFrom, $dateTo])
-                                ->whereNull('logs.event_id');
-                        });
-                });
-            } else {
-                $query->where('logs.event_id', $request->event_id);
-            }
+        if ($eventId) {
+            $query->where('logs.event_id', $eventId);
         }
 
         // Apply date range filter (based on logs.date_time) using provided or default dates
@@ -92,7 +86,7 @@ class ReportController extends Controller
             }
         }
 
-        if ($search) {
+        if ($search !== '') {
             $query->where(function ($q) use ($search) {
                 $q->where('students.name', 'like', "%{$search}%")
                     ->orWhere('students.student_id', 'like', "%{$search}%");
