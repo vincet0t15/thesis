@@ -14,7 +14,8 @@ class StudentController extends Controller
     {
         $students = Student::query()
             ->when(request('search'), function ($query, $search) {
-                $query->where('name', 'like', "%{$search}%");
+                $query->where('name', 'like', "%{$search}%")
+                    ->orWhere('student_id', 'like', "%{$search}%");
             })
             ->with('course')
             ->paginate(10)->withQueryString();
