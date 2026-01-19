@@ -16,9 +16,19 @@ class ReportController extends Controller
         $filters = $request->only(['search', 'course_id', 'event_id', 'date_from', 'date_to']);
         $search = $request->input('search');
 
-
-        // Note: date_from/date_to are optional. When cleared in the UI,
-        // they should not restrict course/event filters.
+        // Default date range to today only on first load (no "initialized" flag).
+        // When the UI clears the dates, it always sends initialized=1,
+        // so we skip this block and do not re-apply the default.
+        if (!$request->boolean('initialized') && empty($filters['date_from']) && empty($filters['date_to'])) {
+            $today = now()->toDateString();
+            $filters['date_from'] = $today;
+            $filters['date_to'] = $today;
+            $request->merge([
+                'date_from' => $today,
+                'date_to' => $today,
+                'initialized' => true,
+            ]);
+        }
 
         $query = Log::query()
             ->join('students', 'logs.student_id', '=', 'students.id')

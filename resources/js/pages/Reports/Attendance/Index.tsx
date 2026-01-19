@@ -53,6 +53,7 @@ export default function AttendanceIndex({ logs, courses, events, filters }: Prop
         event_id: filters.event_id || 'all',
         date_from: filters.date_from || '',
         date_to: filters.date_to || '',
+        initialized: '1',
     });
 
     const handleSearchChange: ChangeEventHandler<HTMLInputElement> = (e) => {
