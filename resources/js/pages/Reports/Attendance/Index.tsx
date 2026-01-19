@@ -79,6 +79,8 @@ export default function AttendanceIndex({ logs, courses, events, filters }: Prop
         if (queryParams.event_id === 'all') delete queryParams.event_id;
         if (!queryParams.date_from) delete queryParams.date_from;
         if (!queryParams.date_to) delete queryParams.date_to;
+
+
         router.get(route('report.attendance'), queryParams, {
             preserveState: true,
             preserveScroll: true,
