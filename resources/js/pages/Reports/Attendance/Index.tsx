@@ -1,3 +1,4 @@
+import CustomDatePicker from '@/components/custom-date-picker';
 import Pagination from '@/components/paginationData';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -50,6 +51,8 @@ export default function AttendanceIndex({ logs, courses, events, filters }: Prop
         search: filters.search || '',
         course_id: filters.course_id || 'all',
         event_id: filters.event_id || 'all',
+        date_from: filters.date_from || '',
+        date_to: filters.date_to || '',
     });
 
     const handleSearchChange: ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -107,6 +110,8 @@ export default function AttendanceIndex({ logs, courses, events, filters }: Prop
                         <div className="flex flex-col items-end justify-end">
                             <span className="font-semibold">Total Records:</span> {logs.total}
                         </div>
+
+
                     </div>
                 </div>
 
@@ -145,6 +150,25 @@ export default function AttendanceIndex({ logs, courses, events, filters }: Prop
                                 ))}
                             </SelectContent>
                         </Select>
+
+
+                        <div className="flex flex-col gap-1.5 w-full sm:w-[180px]">
+
+                            <CustomDatePicker
+                                placeholder="Date from"
+                                initialDate={data.date_from}
+                                onSelect={(date) => handleFilterChange('date_from', date)}
+                            />
+                        </div>
+
+                        <div className="flex flex-col gap-1.5 w-full sm:w-[180px]">
+
+                            <CustomDatePicker
+                                placeholder="Date to"
+                                initialDate={data.date_to}
+                                onSelect={(date) => handleFilterChange('date_to', date)}
+                            />
+                        </div>
                     </div>
 
                     <div className="flex items-center gap-2">

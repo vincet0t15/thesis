@@ -17,12 +17,14 @@ interface Props {
     initialDate?: string;
     onSelect?: (formatted: string) => void;
     disabled?: boolean; // ✅ Added disabled prop
+    placeholder?: string;
 }
 
 export default function CustomDatePicker({
     initialDate,
     onSelect,
     disabled = false,
+    placeholder
 }: Props) {
     const id = useId();
     const [date, setDate] = useState<Date | undefined>();
@@ -67,7 +69,7 @@ export default function CustomDatePicker({
                             >
                                 {date
                                     ? format(date, 'yyyy-MM-dd')
-                                    : 'Pick a date'}
+                                    : placeholder}
                             </span>
                             <CalendarIcon
                                 size={16}
