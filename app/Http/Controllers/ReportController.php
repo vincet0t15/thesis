@@ -13,7 +13,7 @@ class ReportController extends Controller
 {
     public function attendance(Request $request)
     {
-        $filters = $request->only(['search', 'course_id', 'event_id']);
+        $filters = $request->only(['search', 'course_id', 'event_id', 'date_from', 'date_to']);
         $search = $request->input('search');
 
         $query = Log::query()
@@ -21,7 +21,7 @@ class ReportController extends Controller
             ->leftJoin('courses', 'students.course_id', '=', 'courses.id')
             ->leftJoin('events', 'logs.event_id', '=', 'events.id')
             ->select([
-                'logs.student_id', // This is the FK (students.id)
+                'logs.student_id',
                 'students.name as student_name',
                 'students.student_id as student_code',
                 'courses.course_name',
@@ -35,6 +35,14 @@ class ReportController extends Controller
         // Apply Filters
         if ($request->course_id) {
             $query->where('students.course_id', $request->course_id);
+        }
+
+        if ($request->date_from) {
+            $query->whereDate('logs.date_time', '>=', $request->date_from);
+        }
+
+        if ($request->date_to) {
+            $query->whereDate('logs.date_time', '<=', $request->date_to);
         }
 
         if ($request->event_id) {

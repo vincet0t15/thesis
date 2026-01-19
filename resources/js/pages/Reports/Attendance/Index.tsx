@@ -51,8 +51,8 @@ export default function AttendanceIndex({ logs, courses, events, filters }: Prop
         search: filters.search || '',
         course_id: filters.course_id || 'all',
         event_id: filters.event_id || 'all',
-        date_from: filters.date_from || '',
-        date_to: filters.date_to || '',
+        date_from: filters.date_from || dayjs().startOf('day').format('YYYY-MM-DD'),
+        date_to: filters.date_to || dayjs().endOf('day').format('YYYY-MM-DD'),
     });
 
     const handleSearchChange: ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -68,6 +68,7 @@ export default function AttendanceIndex({ logs, courses, events, filters }: Prop
         }
     };
 
+
     const handleFilterChange = (key: string, value: string) => {
         const newData = { ...data, [key]: value };
         setData(key as any, value);
@@ -76,12 +77,14 @@ export default function AttendanceIndex({ logs, courses, events, filters }: Prop
         const queryParams: any = { ...newData };
         if (queryParams.course_id === 'all') delete queryParams.course_id;
         if (queryParams.event_id === 'all') delete queryParams.event_id;
-
+        if (!queryParams.date_from) delete queryParams.date_from;
+        if (!queryParams.date_to) delete queryParams.date_to;
         router.get(route('report.attendance'), queryParams, {
             preserveState: true,
             preserveScroll: true,
         });
     };
+
 
     const selectedCourse = courses.find((c) => String(c.id) === data.course_id)?.course_name || 'All Courses';
     const selectedEvent = events.find((e) => String(e.id) === data.event_id)?.name || 'All Events';
