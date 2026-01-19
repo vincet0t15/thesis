@@ -17,7 +17,7 @@ export function NavDocuments({
     }[];
 } & React.HTMLAttributes<HTMLDivElement>) {
     const { url } = usePage();
-
+    const page = usePage();
     return (
         <SidebarGroup {...props}>
             <SidebarGroupLabel>{title}</SidebarGroupLabel>
@@ -27,9 +27,9 @@ export function NavDocuments({
 
                     return (
                         <SidebarMenuItem key={item.name} data-active={isActive}>
-                            <SidebarMenuButton asChild className={isActive ? 'bg-muted text-primary' : ''}>
-                                <Link href={item.url}>
-                                    <item.icon />
+                            <SidebarMenuButton asChild isActive={page.url.startsWith(item.url)} tooltip={{ children: item.name }}>
+                                <Link href={item.url} prefetch>
+                                    {item.icon && <item.icon />}
                                     <span>{item.name}</span>
                                 </Link>
                             </SidebarMenuButton>
