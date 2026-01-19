@@ -51,8 +51,8 @@ export default function AttendanceIndex({ logs, courses, events, filters }: Prop
         search: filters.search || '',
         course_id: filters.course_id || 'all',
         event_id: filters.event_id || 'all',
-        date_from: filters.date_from || dayjs().startOf('day').format('YYYY-MM-DD'),
-        date_to: filters.date_to || dayjs().endOf('day').format('YYYY-MM-DD'),
+        date_from: filters.date_from || '',
+        date_to: filters.date_to || '',
     });
 
     const handleSearchChange: ChangeEventHandler<HTMLInputElement> = (e) => {

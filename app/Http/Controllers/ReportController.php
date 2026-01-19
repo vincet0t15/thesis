@@ -16,16 +16,9 @@ class ReportController extends Controller
         $filters = $request->only(['search', 'course_id', 'event_id', 'date_from', 'date_to']);
         $search = $request->input('search');
 
-        // Default date range to today if none provided
-        if (empty($filters['date_from']) && empty($filters['date_to'])) {
-            $today = now()->toDateString();
-            $filters['date_from'] = $today;
-            $filters['date_to'] = $today;
-            $request->merge([
-                'date_from' => $today,
-                'date_to' => $today,
-            ]);
-        }
+
+        // Note: date_from/date_to are optional. When cleared in the UI,
+        // they should not restrict course/event filters.
 
         $query = Log::query()
             ->join('students', 'logs.student_id', '=', 'students.id')

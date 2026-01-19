@@ -38,11 +38,11 @@ export default function CustomDatePicker({
     }, [initialDate]);
 
     const handleSelect = (selectedDate: Date | undefined) => {
-        if (disabled) return; // ✅ Prevent selection if disabled
+        if (disabled) return;
         setDate(selectedDate);
 
-        if (onSelect && selectedDate) {
-            const formattedDate = format(selectedDate, 'yyyy-MM-dd');
+        if (onSelect) {
+            const formattedDate = selectedDate ? format(selectedDate, 'yyyy-MM-dd') : '';
             onSelect(formattedDate);
         }
     };
@@ -69,7 +69,7 @@ export default function CustomDatePicker({
                             >
                                 {date
                                     ? format(date, 'yyyy-MM-dd')
-                                    : placeholder}
+                                    : placeholder ? placeholder : 'Select date'}
                             </span>
                             <CalendarIcon
                                 size={16}
