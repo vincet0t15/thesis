@@ -16,6 +16,17 @@ class ReportController extends Controller
         $filters = $request->only(['search', 'course_id', 'event_id', 'date_from', 'date_to']);
         $search = $request->input('search');
 
+        // Default date range to today if none provided
+        if (empty($filters['date_from']) && empty($filters['date_to'])) {
+            $today = now()->toDateString();
+            $filters['date_from'] = $today;
+            $filters['date_to'] = $today;
+            $request->merge([
+                'date_from' => $today,
+                'date_to' => $today,
+            ]);
+        }
+
         $query = Log::query()
             ->join('students', 'logs.student_id', '=', 'students.id')
             ->leftJoin('courses', 'students.course_id', '=', 'courses.id')
@@ -61,6 +72,20 @@ class ReportController extends Controller
                 });
             } else {
                 $query->where('logs.event_id', $request->event_id);
+            }
+        }
+
+        // Apply date range filter (based on logs.date_time) using provided or default dates
+        if ($request->date_from || $request->date_to) {
+            $dateFrom = $request->date_from ? \Carbon\Carbon::parse($request->date_from)->startOfDay() : null;
+            $dateTo = $request->date_to ? \Carbon\Carbon::parse($request->date_to)->endOfDay() : null;
+
+            if ($dateFrom && $dateTo) {
+                $query->whereBetween('logs.date_time', [$dateFrom, $dateTo]);
+            } elseif ($dateFrom) {
+                $query->where('logs.date_time', '>=', $dateFrom);
+            } elseif ($dateTo) {
+                $query->where('logs.date_time', '<=', $dateTo);
             }
         }
 
