@@ -11,11 +11,17 @@ class Student extends Model
         'student_id',
         'name',
         'course_id',
+        'year_level_id',
     ];
 
     public function course()
     {
         return $this->belongsTo(Course::class, 'course_id');
+    }
+
+    public function yearLevel()
+    {
+        return $this->belongsTo(YearLevel::class, 'year_level_id');
     }
 
     public function Logs()
