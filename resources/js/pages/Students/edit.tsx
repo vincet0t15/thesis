@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 import { useForm } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
@@ -11,18 +12,21 @@ import { toast } from 'sonner';
 import { SelectCourses } from './selectCourses';
 import { CourseProps } from '@/types/courses';
 import { StudentTypes } from '@/types/students';
+import { YearLevelProps } from '@/types/yearlevel';
 
 interface Props {
-    courses: CourseProps[]
-    student: StudentTypes
+    courses: CourseProps[];
+    yearLevels: YearLevelProps[];
+    student: StudentTypes;
     open: boolean;
     setOpen: (open: boolean) => void;
 }
-export default function StudentEdit({ open, setOpen, courses, student }: Props) {
+export default function StudentEdit({ open, setOpen, courses, yearLevels, student }: Props) {
     const { data, setData, processing, errors, put, reset } = useForm<StudentTypes>({
         name: student.name,
         student_id: student.student_id,
         course_id: student.course_id,
+        year_level_id: student.year_level_id,
     });
 
     const submit: FormEventHandler = (e) => {
@@ -81,6 +85,25 @@ export default function StudentEdit({ open, setOpen, courses, student }: Props) 
                                 dataValue={data.course_id}
 
                             />
+                        </div>
+
+                        <div className="grid gap-2">
+                            <Label>Year Level</Label>
+                            <Select
+                                value={data.year_level_id ? String(data.year_level_id) : ''}
+                                onValueChange={(val) => setData('year_level_id', Number(val))}
+                            >
+                                <SelectTrigger>
+                                    <SelectValue placeholder="Select Year Level" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {yearLevels.map((yl) => (
+                                        <SelectItem key={yl.id} value={String(yl.id)}>
+                                            {yl.name}
+                                        </SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
                         </div>
                     </div>
                     <DialogFooter>

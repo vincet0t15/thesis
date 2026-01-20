@@ -11,6 +11,7 @@ export interface FilterProps {
     event_id: number;
     date_from: string;
     date_to: string;
+    year_level_id: number;
 }
 
 interface MyPageProps extends InertiaPageProps {
