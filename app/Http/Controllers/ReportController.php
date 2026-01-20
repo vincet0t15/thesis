@@ -52,7 +52,10 @@ class ReportController extends Controller
                 DB::raw('MIN(CASE WHEN logs.checkType = 0 THEN logs.date_time END) as time_in'),
                 DB::raw('MAX(CASE WHEN logs.checkType = 1 THEN logs.date_time END) as time_out'),
             ])
-            ->groupBy('logs.student_id', 'date', 'students.name', 'students.student_id', 'courses.course_name', 'logs.event_id', 'events.name');
+
+            ->groupBy('logs.student_id', 'date', 'students.name', 'students.student_id', 'courses.course_name', 'logs.event_id', 'events.name')
+            ->orderBy('logs.id')
+            ->orderBy('date');
 
         if ($courseId) {
             $query->where('students.course_id', $courseId);
