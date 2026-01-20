@@ -92,6 +92,17 @@ class ReportController extends Controller
             });
         }
 
+        // Calculate totals for Time In and Time Out
+        // We wrap the current query as a subquery to count the computed columns time_in and time_out
+        $subQuery = $query->toBase();
+        $totals = DB::table(DB::raw("({$subQuery->toSql()}) as sub"))
+            ->mergeBindings($subQuery)
+            ->selectRaw('COUNT(time_in) as total_in, COUNT(time_out) as total_out')
+            ->first();
+
+        $totalTimeIn = $totals->total_in ?? 0;
+        $totalTimeOut = $totals->total_out ?? 0;
+
         $logs = $query->orderBy('date', 'desc')
             ->orderBy('time_in', 'asc')
             ->paginate(15)
@@ -105,6 +116,8 @@ class ReportController extends Controller
             'courses' => $courses,
             'events' => $events,
             'filters' => $filters,
+            'totalTimeIn' => $totalTimeIn,
+            'totalTimeOut' => $totalTimeOut,
         ]);
     }
 

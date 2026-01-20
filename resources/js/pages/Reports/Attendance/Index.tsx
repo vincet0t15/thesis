@@ -33,6 +33,8 @@ interface Props {
     courses: CourseProps[];
     events: EventProps[];
     filters: FilterProps;
+    totalTimeIn: number;
+    totalTimeOut: number;
 }
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -46,7 +48,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function AttendanceIndex({ logs, courses, events, filters }: Props) {
+export default function AttendanceIndex({ logs, courses, events, filters, totalTimeIn, totalTimeOut }: Props) {
     const { data, setData } = useForm({
         search: filters.search || '',
         course_id: filters.course_id || 'all',
@@ -119,10 +121,10 @@ export default function AttendanceIndex({ logs, courses, events, filters }: Prop
                             </div>
                         </div>
                         <div className="flex flex-col items-end justify-end">
-                            <span className="font-semibold">Total Records:</span> {logs.total}
+                            <div><span className="font-semibold">Total Records:</span> {logs.total}</div>
+                            <div><span className="font-semibold">Total Time In:</span> {totalTimeIn}</div>
+                            <div><span className="font-semibold">Total Time Out:</span> {totalTimeOut}</div>
                         </div>
-
-
                     </div>
                 </div>
 
@@ -194,6 +196,12 @@ export default function AttendanceIndex({ logs, courses, events, filters }: Prop
                             <IconPrinter className="size-4" />
                         </Button>
                     </div>
+                </div>
+
+                <div className="flex justify-end gap-6 text-sm font-medium text-gray-600 print:hidden px-1">
+                    <span>Total Time In: <span className="text-black font-bold">{totalTimeIn}</span></span>
+                    <span>Total Time Out: <span className="text-black font-bold">{totalTimeOut}</span></span>
+                    <span>Total Records: <span className="text-black font-bold">{logs.total}</span></span>
                 </div>
 
                 <div className="w-full overflow-hidden print:overflow-visible print:w-full rounded-sm border shadow-sm">
