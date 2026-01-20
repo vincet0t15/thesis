@@ -12,6 +12,9 @@ import { ChangeEventHandler, KeyboardEventHandler, useState } from 'react';
 
 import { CourseProps } from '@/types/courses';
 import { YearLevelProps } from '@/types/yearlevel';
+import DeleteYearLevel from './delete';
+import YearLevelCreate from './create';
+import YearLevelEdit from './edit';
 
 interface Props {
     yearLevels: PaginatedDataResponse<YearLevelProps>;
@@ -82,26 +85,26 @@ export default function YearLevelIndex({ yearLevels, filters }: Props) {
                         <TableHeader className="bg-muted/50">
                             <TableRow>
                                 <TableHead className="text-primary font-bold">Year Level Name</TableHead>
-                                <TableHead className="text-primary font-bold">Action</TableHead>
+                                <TableHead className="text-primary font-bold text-end">Action</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
                             {yearLevels.data.length > 0 ? (
                                 yearLevels.data.map((yearLevel, index) => (
-                                    <TableRow key={index} className="text-sm">
-                                        <TableCell className="cursor-pointer text-sm uppercase hover:font-bold hover:underline">
-                                            <span onClick={() => handleClickName(yearLevel)}>{yearLevel.name}</span>
+                                    <TableRow key={index} className="text-sm ">
+                                        <TableCell className="cursor-pointer text-sm ">
+                                            <span >{yearLevel.name}</span>
                                         </TableCell>
-                                        <TableCell className="text-sm uppercase">{yearLevel.name}</TableCell>
-                                        <TableCell className="text-sm gap-2 flex">
+
+                                        <TableCell className="text-sm gap-2 flex-end px-2 text-end">
                                             <span
-                                                className="cursor-pointer text-green-500 hover:text-orange-700 hover:underline"
+                                                className="cursor-pointer text-green-500 hover:text-green-700 hover:underline"
                                                 onClick={() => handleClickEdit(yearLevel)}
                                             >
                                                 Edit
                                             </span>
                                             <span
-                                                className="text-red-500 cursor-pointer hover:text-orange-700 hover:underline"
+                                                className="ml-2 text-red-500 cursor-pointer hover:text-orange-700 hover:underline"
                                                 onClick={() => handleClickDelete(yearLevel)}
                                             >
                                                 Delete
@@ -124,7 +127,9 @@ export default function YearLevelIndex({ yearLevels, filters }: Props) {
                     <Pagination data={yearLevels} />
                 </div>
 
-
+                {openCreate && <YearLevelCreate open={openCreate} setOpen={setOpenCreate} />}
+                {openEdit && dataToEdit && <YearLevelEdit open={openEdit} setOpen={setOpenEdit} yearLevel={dataToEdit} />}
+                {openDelete && dataToDelete && <DeleteYearLevel open={openDelete} setOpen={setOpenDelete} dataToDelete={dataToDelete} />}
             </div>
         </AppLayout>
     );

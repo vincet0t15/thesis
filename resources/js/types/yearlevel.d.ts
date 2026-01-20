@@ -3,4 +3,6 @@ export interface YearLevelProps {
     name: string;
 }
 
-export type YearLevelListProps = YearLevelProps[];
+export type YearLevelListProps = {
+    name: string;
+}
