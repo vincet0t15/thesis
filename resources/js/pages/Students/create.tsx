@@ -108,7 +108,6 @@ export default function StudentCreate({ open, setOpen, courses, yearLevels }: Pr
                                 </Select>
                             </div>
                         </div>
-
                     </div>
                     <DialogFooter>
                         <Button className="cursor-pointer" type="submit" disabled={processing} variant={'outline'} size={'sm'}>
