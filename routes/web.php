@@ -8,6 +8,7 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\YearLevelController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -49,6 +50,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // REPORTS
     Route::get('/attendance-reports', [ReportController::class, 'attendance'])->name('report.attendance');
     Route::get('/attendee-count-reports', [ReportController::class, 'attendeeCount'])->name('report.attendee-count');
+
+    // YEAR LEVELS
+    Route::get('/year-levels', [YearLevelController::class, 'index'])->name('year-level.index');
+    Route::post('/year-levels-store', [YearLevelController::class, 'store'])->name('year-level.store');
+    Route::put('/year-levels-update/{yearLevel}', [YearLevelController::class, 'update'])->name('year-level.update');
+    Route::delete('/year-levels-destroy/{yearLevel}', [YearLevelController::class, 'destroy'])->name('year-level.destroy');
 });
 
 

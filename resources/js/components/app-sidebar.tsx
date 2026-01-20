@@ -44,6 +44,11 @@ const data = {
             url: '/events',
             icon: IconCalendarCheck,
         },
+        {
+            name: 'Year Levels',
+            url: '/year-levels',
+            icon: IconDatabase,
+        },
     ],
 };
 interface AuthUser {
