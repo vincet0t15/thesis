@@ -28,7 +28,6 @@ class ReportController extends Controller
             $filters['event_id'] = null;
         }
 
-
         if (!$request->boolean('initialized') && empty($filters['date_from']) && empty($filters['date_to'])) {
             $today = now('Asia/Manila')->toDateString();
             $filters['date_from'] = $today;
