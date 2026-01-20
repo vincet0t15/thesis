@@ -21,6 +21,7 @@ import SelectEmployementType from './selectEmployementType';
 import { StudentProps } from '@/types/students';
 import { CourseProps } from '@/types/courses';
 import { EventProps } from '@/types/events';
+import { YearLevelProps } from '@/types/yearlevel';
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Daily Time Record',
@@ -33,8 +34,9 @@ interface Props {
     filters: FilterProps;
     courses: CourseProps[];
     events: EventProps[];
+    yearLevels: YearLevelProps[];
 }
-export default function DTR({ students, filters, courses, events }: Props) {
+export default function DTR({ students, filters, courses, events, yearLevels }: Props) {
     const [openImport, setOpenImport] = useState(false);
     const [openFilterData, setOpenFilterData] = useState(false);
     const [selectedStudent, setSelectedStudent] = useState<number[]>([]);
@@ -50,6 +52,7 @@ export default function DTR({ students, filters, courses, events }: Props) {
         selectedMonth: string | null;
         course_id: number | null;
         event_id: number | null;
+        year_level_id: number | null;
     }>({
         search: filters.search || '',
         employment_type_id: filters.employment_type_id || 0,
@@ -59,6 +62,7 @@ export default function DTR({ students, filters, courses, events }: Props) {
         selectedMonth: filters.selectedMonth || '',
         course_id: filters.course_id || 0,
         event_id: filters.event_id || 0,
+        year_level_id: filters.year_level_id || 0,
     });
 
     const onChangeEvent = (id: number | 0) => {
@@ -143,6 +147,17 @@ export default function DTR({ students, filters, courses, events }: Props) {
     const onChangeMonth = (month: string) => {
         const updatedData = { ...data, selectedMonth: month };
         setData(updatedData);
+        router.get(route('dtr.index'), updatedData, {
+            preserveState: true,
+            preserveScroll: true,
+        });
+    };
+
+    const onChangeYearLevel = (yearLevelId: number) => {
+        const newYearLevelId = data.year_level_id === yearLevelId ? null : yearLevelId;
+        const updatedData = { ...data, year_level_id: newYearLevelId };
+        setData(updatedData);
+
         router.get(route('dtr.index'), updatedData, {
             preserveState: true,
             preserveScroll: true,
@@ -240,6 +255,9 @@ export default function DTR({ students, filters, courses, events }: Props) {
                     selectedYear={data.selectedYear || ''}
                     onChangeMonth={onChangeMonth}
                     selectedMonth={data.selectedMonth || ''}
+                    yearLevels={yearLevels}
+                    selectedYearLevel={Number(data.year_level_id)}
+                    onChangeYearLevel={onChangeYearLevel}
                 />
             )}
         </AppLayout>

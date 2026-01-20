@@ -37,11 +37,14 @@ class DailyTimeRecordController extends Controller
             'events' => $events,
             'students' => $data['students'],
             'courses' => $data['courses'],
+            'yearLevels' => $data['yearLevels'],
             'filters' => [
                 'search' => $request->input('search'),
                 'selectedYear' => $request->input('selectedYear'),
                 'selectedMonth' => $request->input('selectedMonth'),
                 'course_id' => $request->course_id,
+                'year_level_id' => $request->year_level_id,
+                'event_id' => $request->event_id,
             ],
             'notifications' => $data['notifications'] ?? [],
         ]);

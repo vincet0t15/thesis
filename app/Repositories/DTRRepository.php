@@ -8,6 +8,7 @@ use App\Models\Employee;
 use App\Models\EmploymentType;
 use App\Models\Office;
 use App\Models\Student;
+use App\Models\YearLevel;
 use Illuminate\Support\Facades\Auth;
 
 class DTRRepository implements DTRInterface
@@ -25,6 +26,7 @@ class DTRRepository implements DTRInterface
         $search = $request->input('search');
         $courseId = $request->course_id;
         $selectedEvent = $request->input('event_id');
+        $yearLevelId = $request->input('year_level_id');
 
         $students = Student::when($search, function ($query) use ($search) {
             $query->where(function ($q) use ($search) {
@@ -36,12 +38,15 @@ class DTRRepository implements DTRInterface
             ->when($courseId, function ($query) use ($courseId) {
                 $query->where('course_id', $courseId);
             })
+            ->when($yearLevelId, function ($query) use ($yearLevelId) {
+                $query->where('year_level_id', $yearLevelId);
+            })
             ->when($selectedEvent, function ($query) use ($selectedEvent) {
                 $query->whereHas('Logs', function ($q) use ($selectedEvent) {
                     $q->where('event_id', $selectedEvent);
                 });
             })
-            ->with('course')
+            ->with(['course', 'yearLevel'])
             ->orderBy('name', 'asc')
             ->paginate(100)
             ->withQueryString();
@@ -55,6 +60,7 @@ class DTRRepository implements DTRInterface
         return [
             'students' => $students,
             'courses' => Course::all(),
+            'yearLevels' => YearLevel::all(),
             'notifications' => $notifications,
         ];
     }

@@ -12,10 +12,13 @@ import { SelectCourses } from '../Students/selectCourses';
 import { CourseProps } from '@/types/courses';
 import { EventProps } from '@/types/events';
 import { SelectEvents } from './selectEvents';
+import { YearLevelProps } from '@/types/yearlevel';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 interface Props {
     courses: CourseProps[];
     events: EventProps[];
+    yearLevels: YearLevelProps[];
     open: boolean;
     setOpen: (open: boolean) => void;
     selectedCourse: number;
@@ -26,12 +29,15 @@ interface Props {
     selectedYear: string;
     onChangeMonth: (month: string) => void;
     selectedMonth: string;
+    selectedYearLevel: number;
+    onChangeYearLevel: (yearLevelId: number) => void;
 }
 export function FilterData({
     open,
     setOpen,
     courses,
     events,
+    yearLevels,
     onChangeCourse,
     selectedCourse,
     selectedEvent,
@@ -40,6 +46,8 @@ export function FilterData({
     selectedYear,
     onChangeMonth,
     selectedMonth,
+    selectedYearLevel,
+    onChangeYearLevel,
 }: Props) {
 
 
@@ -55,6 +63,24 @@ export function FilterData({
                         <div className="flex flex-col gap-3">
                             <Label htmlFor="header">Course</Label>
                             <SelectCourses courses={courses} onChange={onChangeCourse} dataValue={selectedCourse} />
+                        </div>
+                        <div className="flex flex-col gap-3">
+                            <Label htmlFor="header">Year Level</Label>
+                            <Select
+                                value={selectedYearLevel ? String(selectedYearLevel) : ''}
+                                onValueChange={(val) => onChangeYearLevel(Number(val))}
+                            >
+                                <SelectTrigger>
+                                    <SelectValue placeholder="Select Year Level" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {yearLevels.map((yl) => (
+                                        <SelectItem key={yl.id} value={String(yl.id)}>
+                                            {yl.name}
+                                        </SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
                         </div>
                         <div className="flex flex-col gap-3">
                             <Label htmlFor="header">Event</Label>
