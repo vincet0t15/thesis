@@ -30,13 +30,12 @@ class ReportController extends Controller
 
 
         if (!$request->boolean('initialized') && empty($filters['date_from']) && empty($filters['date_to'])) {
-            $today = now()->toDateString();
+            $today = now('Asia/Manila')->toDateString();
             $filters['date_from'] = $today;
             $filters['date_to'] = $today;
             $request->merge([
                 'date_from' => $today,
                 'date_to' => $today,
-                // 'initialized' => true,
             ]);
         }
 
@@ -114,7 +113,8 @@ class ReportController extends Controller
         $filters = $request->only(['event_id', 'date_from', 'date_to']);
 
         if (!$request->boolean('initialized') && empty($filters['date_from']) && empty($filters['date_to'])) {
-            $today = now()->toDateString();
+            $today = now('Asia/Manila')->toDateString();
+
             $filters['date_from'] = $today;
             $filters['date_to'] = $today;
             $request->merge([
