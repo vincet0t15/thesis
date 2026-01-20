@@ -82,19 +82,7 @@ export default function AttendeeCountIndex({ reportData, allEvents, filters }: P
         ? `${dayjs(data.date_from).format('MMM D, YYYY')} - ${dayjs(data.date_to).format('MMM D, YYYY')}`
         : 'All Dates';
 
-    const hasDateRange = Boolean(data.date_from) && Boolean(data.date_to);
-    const selectedFrom = hasDateRange ? dayjs(data.date_from) : null;
-    const selectedTo = hasDateRange ? dayjs(data.date_to) : null;
-
-    const filteredData = hasDateRange
-        ? reportData.data.filter((item) => {
-            const itemFrom = dayjs(item.date_from);
-            const itemTo = dayjs(item.date_to);
-            const startOk = itemFrom.isAfter(selectedFrom!) || itemFrom.isSame(selectedFrom!);
-            const endOk = itemTo.isBefore(selectedTo!) || itemTo.isSame(selectedTo!);
-            return startOk && endOk;
-        })
-        : reportData.data;
+    const filteredData = reportData.data;
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>

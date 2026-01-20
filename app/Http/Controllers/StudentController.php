@@ -18,6 +18,7 @@ class StudentController extends Controller
                     ->orWhere('student_id', 'like', "%{$search}%");
             })
             ->with('course')
+            ->orderBy('name', 'asc')
             ->paginate(10)->withQueryString();
 
         return Inertia::render(
