@@ -9,7 +9,7 @@ use App\Repositories\DTRRepository;
 use App\Repositories\EmploymentTypeRepository;
 use App\Repositories\OfficeRepository;
 use Illuminate\Support\ServiceProvider;
-
+use Illuminate\Support\Facades\URL;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -17,8 +17,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(OfficeInterface::class, OfficeRepository::class);
-        $this->app->bind(EmploymentTypeInterface::class, EmploymentTypeRepository::class);
+        // $this->app->bind(OfficeInterface::class, OfficeRepository::class);
+        // $this->app->bind(EmploymentTypeInterface::class, EmploymentTypeRepository::class);
         $this->app->bind(DTRInterface::class, DTRRepository::class);
     }
 
@@ -27,6 +27,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        if (app()->environment('local')) {
+        URL::forceScheme('https');
+    }
     }
 }
