@@ -19,7 +19,8 @@ class YearLevelController extends Controller
                 $query->where('name', 'like', "%{$search}%");
             })
             ->orderBy('name', 'asc')
-            ->paginate(10)->withQueryString();
+            ->paginate(10)
+            ->withQueryString();
 
 
         return Inertia::render(
