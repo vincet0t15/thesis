@@ -46,7 +46,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('/events-update/{event}', [EventController::class, 'update'])->name('event.update');
     Route::delete('/events-destroy/{event}', [EventController::class, 'destroy'])->name('event.destroy');
 
-
     // REPORTS
     Route::get('/attendance-reports', [ReportController::class, 'attendance'])->name('report.attendance');
     Route::get('/attendee-count-reports', [ReportController::class, 'attendeeCount'])->name('report.attendee-count');
