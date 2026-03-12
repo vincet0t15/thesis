@@ -1,5 +1,8 @@
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { EmploymentTypeProps } from '@/types/employmentType';
+type EmploymentTypeProps = {
+    id: number;
+    employment_type: string;
+};
 interface Props {
     employmentTypes: EmploymentTypeProps[];
     value?: string;

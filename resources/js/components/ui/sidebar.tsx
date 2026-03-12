@@ -27,7 +27,7 @@ import {
 
 const SIDEBAR_COOKIE_NAME = "sidebar_state"
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7
-const SIDEBAR_WIDTH = "16rem"
+const SIDEBAR_WIDTH = 'calc(var(--spacing) * 72)'
 const SIDEBAR_WIDTH_MOBILE = "18rem"
 const SIDEBAR_WIDTH_ICON = "3rem"
 const SIDEBAR_KEYBOARD_SHORTCUT = "b"
@@ -133,7 +133,7 @@ function SidebarProvider({
           data-slot="sidebar-wrapper"
           style={
             {
-              "--sidebar-width": 'calc(var(--spacing) * 72)',
+              "--sidebar-width": SIDEBAR_WIDTH,
               '--header-height': 'calc(var(--spacing) * 12)',
               "--sidebar-width-icon": SIDEBAR_WIDTH_ICON,
               ...style,

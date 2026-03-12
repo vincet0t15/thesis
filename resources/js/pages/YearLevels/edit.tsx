@@ -3,7 +3,6 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { CourseTypes } from '@/types/courses';
 import { YearLevelListProps, YearLevelProps } from '@/types/yearlevel';
 
 import { useForm } from '@inertiajs/react';

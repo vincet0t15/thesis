@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { EventProps, EventTypes } from '@/types/events';
+import { EventTypes } from '@/types/events';
 
 import { useForm } from '@inertiajs/react';
 import { Checkbox } from '@/components/ui/checkbox';

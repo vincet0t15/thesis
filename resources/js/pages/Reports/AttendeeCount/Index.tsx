@@ -55,23 +55,37 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function AttendeeCountIndex({ reportData, allEvents, filters }: Props) {
-    const { data, setData } = useForm({
+    type AttendeeCountFiltersForm = {
+        event_id: string;
+        date_from: string;
+        date_to: string;
+        initialized: string;
+    };
+
+    const buildQueryParams = (filters: AttendeeCountFiltersForm): Record<string, string> => {
+        const queryParams: Record<string, string> = {
+            initialized: filters.initialized,
+        };
+
+        if (filters.event_id !== 'all') queryParams.event_id = filters.event_id;
+        if (filters.date_from) queryParams.date_from = filters.date_from;
+        if (filters.date_to) queryParams.date_to = filters.date_to;
+
+        return queryParams;
+    };
+
+    const { data, setData } = useForm<AttendeeCountFiltersForm>({
         event_id: filters.event_id || 'all',
         date_from: filters.date_from || '',
         date_to: filters.date_to || '',
         initialized: '1',
     });
 
-    const handleFilterChange = (key: string, value: string) => {
+    const handleFilterChange = (key: keyof AttendeeCountFiltersForm, value: string) => {
         const newData = { ...data, [key]: value };
-        setData(key as any, value);
+        setData(key, value);
 
-        const queryParams: any = { ...newData };
-        if (queryParams.event_id === 'all') delete queryParams.event_id;
-        if (!queryParams.date_from) delete queryParams.date_from;
-        if (!queryParams.date_to) delete queryParams.date_to;
-
-        router.get(route('report.attendee-count'), queryParams, {
+        router.get(route('report.attendee-count'), buildQueryParams(newData), {
             preserveState: true,
             preserveScroll: true,
         });

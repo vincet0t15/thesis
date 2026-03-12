@@ -31,27 +31,38 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 export default function StudentIndex({ students, filters, courses, yearLevels }: Props) {
+    type StudentFiltersForm = {
+        search: string;
+        course_id: string;
+        year_level_id: string;
+    };
+
+    const buildQueryParams = (filters: StudentFiltersForm): Record<string, string> => {
+        const queryParams: Record<string, string> = {};
+
+        if (filters.search) queryParams.search = filters.search;
+        if (filters.course_id !== 'all') queryParams.course_id = filters.course_id;
+        if (filters.year_level_id !== 'all') queryParams.year_level_id = filters.year_level_id;
+
+        return queryParams;
+    };
+
     const [openCreate, setOpenCreate] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
     const [dataToEdit, setDataEdit] = useState<StudentProps | null>(null);
     const [openDelete, setOpenDelete] = useState(false);
     const [dataToDelete, setDataToDelete] = useState<StudentProps | null>(null);
-    const { data, setData } = useForm({
+    const { data, setData } = useForm<StudentFiltersForm>({
         search: filters.search || '',
-        course_id: filters.course_id || 'all',
-        year_level_id: filters.year_level_id || 'all',
+        course_id: filters.course_id ? String(filters.course_id) : 'all',
+        year_level_id: filters.year_level_id ? String(filters.year_level_id) : 'all',
     });
 
-    const handleFilterChange = (key: string, value: string) => {
+    const handleFilterChange = (key: keyof StudentFiltersForm, value: string) => {
         const newData = { ...data, [key]: value };
-        setData(key as any, value);
+        setData(key, value);
 
-        const queryParams: any = { ...newData };
-        if (queryParams.course_id === 'all') delete queryParams.course_id;
-        if (queryParams.year_level_id === 'all') delete queryParams.year_level_id;
-        if (!queryParams.search) delete queryParams.search;
-
-        router.get(route('student.index'), queryParams, {
+        router.get(route('student.index'), buildQueryParams(newData), {
             preserveState: true,
             preserveScroll: true,
         });
@@ -59,12 +70,7 @@ export default function StudentIndex({ students, filters, courses, yearLevels }:
 
     const handleKeyDown: KeyboardEventHandler<HTMLInputElement> = (e) => {
         if (e.key === 'Enter') {
-            const queryParams: any = { ...data };
-            if (queryParams.course_id === 'all') delete queryParams.course_id;
-            if (queryParams.year_level_id === 'all') delete queryParams.year_level_id;
-            if (!queryParams.search) delete queryParams.search;
-
-            router.get(route('student.index'), queryParams, {
+            router.get(route('student.index'), buildQueryParams(data), {
                 preserveState: true,
                 preserveScroll: true,
             });
@@ -101,7 +107,7 @@ export default function StudentIndex({ students, filters, courses, yearLevels }:
                     </Button>
 
                     <div className="flex flex-1 items-center gap-2 justify-end">
-                         <Select
+                        <Select
                             value={String(data.course_id)}
                             onValueChange={(val) => handleFilterChange('course_id', val)}
                         >

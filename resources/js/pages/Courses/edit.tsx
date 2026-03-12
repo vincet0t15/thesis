@@ -4,7 +4,6 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { CourseProps, CourseTypes } from '@/types/courses';
-import { OfficeProps, OfficeTypes } from '@/types/office';
 import { useForm } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
 import { ChangeEventHandler, FormEventHandler } from 'react';

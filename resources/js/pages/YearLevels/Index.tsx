@@ -10,7 +10,6 @@ import { Head, router, useForm } from '@inertiajs/react';
 import { IconPlus } from '@tabler/icons-react';
 import { ChangeEventHandler, KeyboardEventHandler, useState } from 'react';
 
-import { CourseProps } from '@/types/courses';
 import { YearLevelProps } from '@/types/yearlevel';
 import DeleteYearLevel from './delete';
 import YearLevelCreate from './create';
@@ -50,11 +49,6 @@ export default function YearLevelIndex({ yearLevels, filters }: Props) {
         setData('search', e.target.value);
     };
 
-    const handleClickName = (data: YearLevelProps) => {
-        setDataEdit(data);
-        setOpenEdit(true);
-    };
-
     const handleClickDelete = (data: YearLevelProps) => {
         setDataToDelete(data);
         setOpenDelete(true);
@@ -70,7 +64,7 @@ export default function YearLevelIndex({ yearLevels, filters }: Props) {
             <Head title="Dashboard" />
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
                 <div className="flex w-full flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                    <Button className="cursor-pointer bg-blue-600 hover:bg-blue-700 text-white border-0 transition-colors" onClick={() => setOpenCreate(true)}>
+                    <Button variant="outline" size="sm" className="cursor-pointer" onClick={() => setOpenCreate(true)}>
                         <IconPlus />
                         <span className="rounded-sm lg:inline">Year Level</span>
                     </Button>

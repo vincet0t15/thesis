@@ -7,7 +7,6 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
-import { StudentProps } from '@/types/students';
 import { useEffect, useState } from 'react';
 import { CourseProps } from '@/types/courses';
 

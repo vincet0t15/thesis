@@ -5,7 +5,6 @@ import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, Sid
 import type { PageProps as InertiaPageProps } from '@inertiajs/core';
 import { usePage } from '@inertiajs/react';
 import { IconBuilding, IconCalendarCheck, IconDatabase, IconListDetails, IconReport } from '@tabler/icons-react';
-import { Building } from 'lucide-react';
 import * as React from 'react';
 
 const data = {

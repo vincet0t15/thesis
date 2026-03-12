@@ -9,12 +9,11 @@ import { BreadcrumbItem } from '@/types';
 import { CourseProps } from '@/types/courses';
 import { EventProps } from '@/types/events';
 import { FilterProps } from '@/types/filter';
-import { LogProps } from '@/types/logs';
 import { PaginatedDataResponse } from '@/types/pagination';
 import { Head, router, useForm } from '@inertiajs/react';
-import { IconFilter, IconPrinter } from '@tabler/icons-react';
+import { IconPrinter } from '@tabler/icons-react';
 import dayjs from 'dayjs';
-import { ChangeEventHandler, KeyboardEventHandler, useState } from 'react';
+import { ChangeEventHandler, KeyboardEventHandler } from 'react';
 
 
 interface AttendanceRecord {
@@ -49,10 +48,33 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function AttendanceIndex({ logs, courses, events, filters, totalTimeIn, totalTimeOut }: Props) {
-    const { data, setData } = useForm({
+    type AttendanceFiltersForm = {
+        search: string;
+        course_id: string;
+        event_id: string;
+        date_from: string;
+        date_to: string;
+        initialized: string;
+    };
+
+    const buildQueryParams = (filters: AttendanceFiltersForm): Record<string, string> => {
+        const queryParams: Record<string, string> = {
+            initialized: filters.initialized,
+        };
+
+        if (filters.search) queryParams.search = filters.search;
+        if (filters.course_id !== 'all') queryParams.course_id = filters.course_id;
+        if (filters.event_id !== 'all') queryParams.event_id = filters.event_id;
+        if (filters.date_from) queryParams.date_from = filters.date_from;
+        if (filters.date_to) queryParams.date_to = filters.date_to;
+
+        return queryParams;
+    };
+
+    const { data, setData } = useForm<AttendanceFiltersForm>({
         search: filters.search || '',
-        course_id: filters.course_id || 'all',
-        event_id: filters.event_id || 'all',
+        course_id: filters.course_id ? String(filters.course_id) : 'all',
+        event_id: filters.event_id ? String(filters.event_id) : 'all',
         date_from: filters.date_from || '',
         date_to: filters.date_to || '',
         initialized: '1',
@@ -64,12 +86,7 @@ export default function AttendanceIndex({ logs, courses, events, filters, totalT
 
     const handleKeyDown: KeyboardEventHandler<HTMLInputElement> = (e) => {
         if (e.key === 'Enter') {
-            const queryParams: any = { ...data };
-            if (queryParams.course_id === 'all') delete queryParams.course_id;
-            if (queryParams.event_id === 'all') delete queryParams.event_id;
-            if (!queryParams.date_from) delete queryParams.date_from;
-            if (!queryParams.date_to) delete queryParams.date_to;
-            router.get(route('report.attendance'), queryParams, {
+            router.get(route('report.attendance'), buildQueryParams(data), {
                 preserveState: true,
                 preserveScroll: true,
             });
@@ -77,19 +94,11 @@ export default function AttendanceIndex({ logs, courses, events, filters, totalT
     };
 
 
-    const handleFilterChange = (key: string, value: string) => {
+    const handleFilterChange = (key: keyof AttendanceFiltersForm, value: string) => {
         const newData = { ...data, [key]: value };
-        setData(key as any, value);
+        setData(key, value);
 
-        // Convert 'all' back to null for the backend
-        const queryParams: any = { ...newData };
-        if (queryParams.course_id === 'all') delete queryParams.course_id;
-        if (queryParams.event_id === 'all') delete queryParams.event_id;
-        if (!queryParams.date_from) delete queryParams.date_from;
-        if (!queryParams.date_to) delete queryParams.date_to;
-
-
-        router.get(route('report.attendance'), queryParams, {
+        router.get(route('report.attendance'), buildQueryParams(newData), {
             preserveState: true,
             preserveScroll: true,
         });

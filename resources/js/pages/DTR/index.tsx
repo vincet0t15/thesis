@@ -1,5 +1,4 @@
 import Pagination from '@/components/paginationData';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
@@ -11,13 +10,10 @@ import { FilterProps } from '@/types/filter';
 
 import { PaginatedDataResponse } from '@/types/pagination';
 import { Head, router, useForm } from '@inertiajs/react';
-import { IconCircle } from '@tabler/icons-react';
-import dayjs from 'dayjs';
 import { FilterIcon, HardDriveDownload, Printer } from 'lucide-react';
 import { ChangeEventHandler, KeyboardEventHandler, useState } from 'react';
 import { FilterData } from './filterData';
 import ImportLogs from './importLogs';
-import SelectEmployementType from './selectEmployementType';
 import { StudentProps } from '@/types/students';
 import { CourseProps } from '@/types/courses';
 import { EventProps } from '@/types/events';

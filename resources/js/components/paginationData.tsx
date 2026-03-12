@@ -1,7 +1,7 @@
 import { PaginatedDataResponse } from '@/types/pagination';
 import { Link } from '@inertiajs/react';
 
-export default function Pagination({ data }: { data: PaginatedDataResponse<any> }) {
+export default function Pagination({ data }: { data: PaginatedDataResponse<unknown> }) {
     return (
         <div className="mt-4 flex items-center justify-between gap-2">
             <p>

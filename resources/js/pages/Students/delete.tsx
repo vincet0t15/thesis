@@ -7,7 +7,6 @@ import {
     AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
-import { CourseProps } from '@/types/courses';
 import { router } from '@inertiajs/react';
 import { toast } from 'sonner';
 import { StudentProps } from '@/types/students';

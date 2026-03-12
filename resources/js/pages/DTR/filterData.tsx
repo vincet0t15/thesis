@@ -1,13 +1,11 @@
 'use client';
 
-import CustomDatePicker from '@/components/custom-date-picker';
 import { MonthSelect } from '@/components/select-month';
 import { Button } from '@/components/ui/button';
 import { Drawer, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle } from '@/components/ui/drawer';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
-import { ChangeEventHandler } from 'react';
 import { SelectCourses } from '../Students/selectCourses';
 import { CourseProps } from '@/types/courses';
 import { EventProps } from '@/types/events';
