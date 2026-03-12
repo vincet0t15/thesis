@@ -13,6 +13,7 @@ import { toast } from 'sonner';
 type RegisterForm = {
     name: string;
     username: string;
+    account_type: 'student' | 'faculty' | 'staff';
     password: string;
     password_confirmation: string;
 };
@@ -21,6 +22,7 @@ export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm<Required<RegisterForm>>({
         name: '',
         username: '',
+        account_type: 'student',
         password: '',
         password_confirmation: '',
     });
@@ -70,6 +72,46 @@ export default function Register() {
                             placeholder="Username"
                         />
                         <InputError message={errors.username} />
+                    </div>
+
+                    <div className="grid gap-2">
+                        <Label>Account Type</Label>
+                        <div className="flex flex-wrap gap-4">
+                            <label className="flex items-center gap-2 text-sm">
+                                <input
+                                    type="radio"
+                                    name="account_type"
+                                    value="student"
+                                    checked={data.account_type === 'student'}
+                                    onChange={() => setData('account_type', 'student')}
+                                    disabled={processing}
+                                />
+                                Student
+                            </label>
+                            <label className="flex items-center gap-2 text-sm">
+                                <input
+                                    type="radio"
+                                    name="account_type"
+                                    value="faculty"
+                                    checked={data.account_type === 'faculty'}
+                                    onChange={() => setData('account_type', 'faculty')}
+                                    disabled={processing}
+                                />
+                                Faculty
+                            </label>
+                            <label className="flex items-center gap-2 text-sm">
+                                <input
+                                    type="radio"
+                                    name="account_type"
+                                    value="staff"
+                                    checked={data.account_type === 'staff'}
+                                    onChange={() => setData('account_type', 'staff')}
+                                    disabled={processing}
+                                />
+                                Staff
+                            </label>
+                        </div>
+                        <InputError message={errors.account_type} />
                     </div>
 
                     <div className="grid gap-2">

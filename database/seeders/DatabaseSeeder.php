@@ -21,6 +21,8 @@ class DatabaseSeeder extends Seeder
                 'username' => 'admin',
                 'is_active' => true,
                 'password' => bcrypt('admin123'),
+                'role' => User::ROLE_SUPER_ADMIN,
+                'account_type' => User::ACCOUNT_TYPE_STAFF,
             ],
 
         ];

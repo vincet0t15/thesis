@@ -36,6 +36,7 @@ export interface User {
     name: string;
     email: string;
     role?: 'super_admin' | 'admin' | 'normal';
+    account_type?: 'student' | 'faculty' | 'staff';
     avatar?: string;
     email_verified_at: string | null;
     created_at: string;
